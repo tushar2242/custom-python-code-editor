@@ -67,7 +67,7 @@
                             s = lineContent + '$$' + count + '$$';
                             forArray.push(count)
                         } else {
-                            s = lineContent;
+                            s = lineContent + '$$' + count + '$$';
                         }
                         s = s + '\n';
                         return s;
@@ -75,17 +75,51 @@
 
                     str2 = newStr.join('')
                     str2 = str2 + '\n'
-
-                    if (str2.includes('for')) {
-                        const updatedLine = str2.split('\n')[position.lineNumber - 1]
-                        const matches = updatedLine.match(/\$\$(\d+)\$\$/)
-                        if (matches) {
-                            const number = matches[1];
-                            // console.log(number); // Output: 3
-                            playBeep(number)
-                            // alert(number)
-                        }
+                    const updatedLine = str2.split('\n')[position.lineNumber - 1]
+                    // console.log(updatedLine)
+                    const matches = updatedLine.match(/\$\$(\d+)\$\$/)
+                    if (matches) {
+                        // console.log(matches)
+                        const number = matches[1];
+                        // console.log(number); // Output: 3
+                        playBeep(number)
+                        // alert(number)
                     }
+                    else {
+                        playBeep(0)
+                    }
+                    // newStr.map((value) => {
+                    //     console.log(value)
+                    //     const matches = value.match(/\$\$(\d+)\$\$/)
+                    //     if (matches) {
+                    //         console.log(matches)
+                    //         const number = matches[1];
+                    //         // console.log(number); // Output: 3
+                    //         playBeep(number)
+                    //         // alert(number)
+                    //     }
+                    //     else {
+                    //         playBeep(0)
+                    //     }
+
+                    // })
+
+
+                    // if (str2.includes('for')) {
+                    //     const updatedLine = str2.split('\n')[position.lineNumber - 1]
+                    //     const matches = updatedLine.match(/\$\$(\d+)\$\$/)
+                    //     if (matches) {
+                    //         const number = matches[1];
+                    //         // console.log(number); // Output: 3
+                    //         playBeep(number)
+                    //         // alert(number)
+                    //     }
+                    //     else {
+                    //         playBeep(0)
+                    //     }
+                    // }
+
+
                     return null
                 },
             });
@@ -172,3 +206,19 @@
 
     };
 </script>
+
+
+
+<!-- if (str2.includes('for')) {
+    const updatedLine = str2.split('\n')[position.lineNumber - 1]
+    const matches = updatedLine.match(/\$\$(\d+)\$\$/)
+    if (matches) {
+        const number = matches[1];
+        // console.log(number); // Output: 3
+        playBeep(number)
+        // alert(number)
+    }
+    else {
+        playBeep(0)
+    }
+} -->
