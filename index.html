@@ -76,7 +76,7 @@
                     str2 = newStr.join('')
                     str2 = str2 + '\n'
 
-                    if (wordInfo.word.includes('for')) {
+                    if (str2.includes('for')) {
                         const updatedLine = str2.split('\n')[position.lineNumber - 1]
                         const matches = updatedLine.match(/\$\$(\d+)\$\$/)
                         if (matches) {
