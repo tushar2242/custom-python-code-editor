@@ -41,7 +41,7 @@
                     const wordInfo = model.getWordAtPosition(position)
                     // Pause the audio
 
-                    const countIndent = [
+                    var countIndent = [
                         {
                             'count': 0,
                             'i': 0,
@@ -97,11 +97,26 @@
                             console.log('curr indent------', currentIndent)
                             // console.log(count)
                             if (uCount?.count == 0 || uCount?.count) {
-                                console.log(uCount)
+                                if (uCount.count == 0) {
+                                    if (lastIndent === currentIndent && text.includes('for')) {
+                                        count = 1
+                                        s = lineContent + '$$' + count + '$$';
+                                        forArray.push(count)
+                                        countIndent.push({
+                                            'count': 1,
+                                            'i': currentIndent
+                                        })
+
+                                    }
+
+                                }
                                 s = lineContent + '$$' + (uCount.count - 1) + '$$';
+
+
                             }
 
                             else {
+
                                 console.log(countIndent)
                                 s = lineContent + '$$' + count + '$$';
                             }
