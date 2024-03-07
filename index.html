@@ -49,7 +49,7 @@
                     ];
 
                     const str = code.trim();
-                    let count = 1;
+                    let count = 0;
                     const forArray = [];
                     const previousSpace = [countLeadingWhitespace(str)];
                     const newStr = line.map((text, index) => {
@@ -59,18 +59,19 @@
                         const currentIndent = countLeadingWhitespace(text);
 
 
-                        console.log(currentIndent)
+
                         // Construct the line with line number and indentation count
                         let lineContent = `${text}`;
 
                         if (lastIndent === currentIndent && text.includes('for')) {
-
+                            count++
                             s = lineContent + '$$' + count + '$$';
                             forArray.push(count)
                             countIndent.push({
-                                'count': count,
+                                'count': 1,
                                 'i': currentIndent
                             })
+                            onSound(false)
                         } else if (lastIndent > currentIndent && text.includes('for')) {
                             count--;
                             previousSpace.push(currentIndent);
@@ -91,17 +92,21 @@
                             })
                         } else {
                             let uCount = countIndent.find((f) => f.i == currentIndent)
-                            // console.log(uCount)
-                            // console.log('last indent------', lastIndent)
-                            // console.log('curr indent------', currentIndent)
+                            console.log(uCount)
+                            console.log('last indent------', lastIndent)
+                            console.log('curr indent------', currentIndent)
+                            // console.log(count)
                             if (uCount?.count == 0 || uCount?.count) {
+                                console.log(uCount)
                                 s = lineContent + '$$' + (uCount.count - 1) + '$$';
                             }
 
                             else {
+                                console.log(countIndent)
                                 s = lineContent + '$$' + count + '$$';
                             }
                         }
+                        console.log(count)
                         s = s + '\n';
                         return s;
                     });
