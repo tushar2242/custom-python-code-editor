@@ -39,6 +39,14 @@
                     const code = model.getValue()
                     const line = model.getLinesContent()
                     const wordInfo = model.getWordAtPosition(position)
+                    // Pause the audio
+
+                    const countIndent = [
+                        {
+                            'count': 0,
+                            'i': 0,
+                        }
+                    ];
 
                     const str = code.trim();
                     let count = 1;
@@ -50,36 +58,64 @@
                         const lastIndent = previousSpace[previousSpace.length - 1];
                         const currentIndent = countLeadingWhitespace(text);
 
+
+                        console.log(currentIndent)
                         // Construct the line with line number and indentation count
                         let lineContent = `${text}`;
 
                         if (lastIndent === currentIndent && text.includes('for')) {
+
                             s = lineContent + '$$' + count + '$$';
                             forArray.push(count)
+                            countIndent.push({
+                                'count': count,
+                                'i': currentIndent
+                            })
                         } else if (lastIndent > currentIndent && text.includes('for')) {
                             count--;
                             previousSpace.push(currentIndent);
                             s = lineContent + '$$' + count + '$$';
                             forArray.push(count)
+                            countIndent.push({
+                                'count': count,
+                                'i': currentIndent
+                            })
                         } else if (lastIndent < countLeadingWhitespace(text) && text.includes('for')) {
                             count++;
                             previousSpace.push(currentIndent);
                             s = lineContent + '$$' + count + '$$';
                             forArray.push(count)
+                            countIndent.push({
+                                'count': count,
+                                'i': currentIndent
+                            })
                         } else {
-                            s = lineContent + '$$' + count + '$$';
+                            let uCount = countIndent.find((f) => f.i == currentIndent)
+                            // console.log(uCount)
+                            // console.log('last indent------', lastIndent)
+                            // console.log('curr indent------', currentIndent)
+                            if (uCount?.count == 0 || uCount?.count) {
+                                s = lineContent + '$$' + (uCount.count - 1) + '$$';
+                            }
+
+                            else {
+                                s = lineContent + '$$' + count + '$$';
+                            }
                         }
                         s = s + '\n';
                         return s;
                     });
 
+                    // console.log(countIndent)
                     str2 = newStr.join('')
+                    console.log(str2)
                     str2 = str2 + '\n'
                     const updatedLine = str2.split('\n')[position.lineNumber - 1]
                     // console.log(updatedLine)
                     const matches = updatedLine.match(/\$\$(\d+)\$\$/)
                     if (matches) {
                         // console.log(matches)
+
                         const number = matches[1];
                         // console.log(number); // Output: 3
                         playBeep(number)
@@ -87,6 +123,7 @@
                     }
                     else {
                         playBeep(0)
+
                     }
                     // newStr.map((value) => {
                     //     console.log(value)
@@ -195,7 +232,7 @@
         if (isSound) {
             const audio = new Audio(beepSound);
 
-
+            audio.pause()
             const playNextBeep = (remaining) => {
                 if (remaining <= 0) return;
                 audio.play();
