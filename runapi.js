@@ -24,10 +24,18 @@ const runCode = async () => {
 
         const res = await response.json();
         console.log(res)
-        output.innerHTML = res.data
+        if (res.data) {
+            output.innerHTML = res.data
+            error.innerHTML = ''
+        }
+
+        if (res.error) {
+            error.innerHTML = res.error
+            output.innerHTML = ''
+        }
     } catch (error) {
         console.error(error);
 
-        error.innerHtml = error
+        error.innerHtml = error.error
     }
 };
